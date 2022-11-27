@@ -9,3 +9,5 @@
 //Tapping this number of times holds the key until tapped once again
 #define ONESHOT_TAP_TOGGLE 3
 
+// Auto-mouse-layer https://github.com/qmk/qmk_firmware/pull/17962
+#define POINTING_DEVICE_AUTO_MOUSE_ENABLE

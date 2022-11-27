@@ -21,9 +21,12 @@
 //     _COLEMAK = 0,
 //     _MAC,
 //     _NAV,
+//     _MOUSE,
 //     _FN
 // };
 
+
+// auto-mouse: https://github.com/qmk/qmk_firmware/pull/17962
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -35,7 +38,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_BSLS, KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,       KC_K,    KC_H,    KC_COMM, KC_DOT,  KC_SLSH, KC_MINS,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
-                                  SP_CTL, SP_SHBS, SP_SUENT,   SP_UMESC, SP_NAV
+                                  SP_CTL, SP_SHBS, SP_SUENT,   SP_ALTESC, SP_NAV
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -53,13 +56,25 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_NAV] = LAYOUT_charybdis_3x6(
   // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
-       KC_NO,   KC_PGUP, KC_HOME, KC_UP,   KC_END,  KC_LCBR,    KC_RCBR, KC_7,    KC_8,    KC_9,    KC_NO,   KC_NO,
+       KC_NO,   KC_PGUP, KC_HOME, KC_UP,   KC_END,  KC_LCBR,    KC_RCBR, KC_7,    KC_8,    KC_9,    KC_NO,   QK_BOOT,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        KC_NO,   KC_PGDN, KC_LEFT, KC_DOWN, KC_RIGHT,KC_LPRN,    KC_RPRN, KC_4,    KC_5,    KC_6,    KC_BSPC, KC_DEL,
   // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
        ND_GRV,  KC_WH_U, KC_WH_D, SP_ASPC, SP_ATAB, KC_LBRC,    KC_RBRC, KC_1,    KC_2,    KC_3,    KC_0,    KC_NO,
   // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
                                   _______, _______, XXXXXXX,    _______, XXXXXXX
+  //                            ╰───────────────────────────╯ ╰──────────────────╯
+  ),
+
+  [_MOUSE] = LAYOUT_charybdis_3x6(
+  // ╭──────────────────────────────────────────────────────╮ ╭──────────────────────────────────────────────────────╮
+       KC_NO,   KC_NO,   KC_NO,   KC_NO,  KC_NO,    KC_NO,      KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,  
+  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+       KC_NO,   KC_NO,   KC_NO,   KC_NO,  KC_NO,    KC_NO,      KC_NO,KC_MS_BTN1,KC_MS_BTN3,KC_MS_BTN2,KC_MS_BTN8,KC_NO,  
+  // ├──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────┤
+       KC_NO,   KC_NO,   KC_NO,   KC_NO,  KC_NO,    KC_NO,      KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,  
+  // ╰──────────────────────────────────────────────────────┤ ├──────────────────────────────────────────────────────╯
+                                  KC_NO,  KC_NO,    KC_NO,      KC_NO,   KC_NO
   //                            ╰───────────────────────────╯ ╰──────────────────╯
   ),
 
@@ -76,3 +91,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 };
 // clang-format on
+
+void pointing_device_init_user(void) {
+    set_auto_mouse_layer(_MOUSE); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
+    set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
+}

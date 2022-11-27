@@ -24,7 +24,7 @@
 
 #define SP_NAV LT(_NAV,KC_SPC) //SPACE when pressed, _NAV layer when hold
 
-#define SP_UMESC LT(_GER,KC_ESC) //ESC when pressed, _GER layer when hold
+#define SP_ALTESC LOPT_T(KC_ESC) //ESC when pressed, L-ALT (L-OPT) when hold
 
 #define SP_SHBS LSFT_T(KC_BSPC) //Backspace when pressed, Shift when hold
 
@@ -77,8 +77,8 @@ void tap_umlaut_mac(int keycode) {
 enum layer_names {
   _COLEMAK,
   _MAC,
-  _GER,
   _NAV,
+  _MOUSE,
   _FN,
 };
 
