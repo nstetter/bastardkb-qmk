@@ -83,7 +83,11 @@ enum layer_names {
 };
 
 enum custom_keycodes {
+  #ifndef NO_CHARYBDIS_KEYCODES
+  MOD0 = CHARYBDIS_SAFE_RANGE,
+  #else
   MOD0 = SAFE_RANGE,
+  #endif // !NO_CHARYBDIS_KEYCODES
   MOD1,
   MOD2,
   MOD3,

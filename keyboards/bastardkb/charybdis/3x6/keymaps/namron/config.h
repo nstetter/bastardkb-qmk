@@ -11,3 +11,8 @@
 
 // Auto-mouse-layer https://github.com/qmk/qmk_firmware/pull/17962
 #define POINTING_DEVICE_AUTO_MOUSE_ENABLE
+
+//natural scrolling
+#define CHARYBDIS_DRAGSCROLL_REVERSE_Y
+
+#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET_TIMEOUT 400U
