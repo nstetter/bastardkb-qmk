@@ -32,7 +32,7 @@
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_COLEMAK] = LAYOUT_charybdis_3x6(
   // ╭───────────┬───────────┬───────────┬───────────┬───────────┬───────────╮ ╭───────────┬───────────┬───────────┬───────────┬───────────┬───────────╮
-      KC_LGUI,    KC_Q,       KC_W,       KC_F,       KC_P,       KC_B,         KC_J,       KC_L,       KC_U,       KC_Y,       KC_SCLN,    KC_EQL,
+       KC_LGUI,   KC_Q,       KC_W,       KC_F,       KC_P,       KC_B,         KC_J,       KC_L,       KC_U,       KC_Y,       KC_SCLN,    KC_EQL,
   // ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤ ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤
        KC_TAB,    KC_A,       KC_R,       KC_S,       KC_T,       KC_G,         KC_M,       KC_N,       KC_E,       KC_I,       KC_O,       KC_QUOTE,
   // ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤ ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤
@@ -50,7 +50,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤ ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤
        _______,   _______,    _______,    _______,    _______,    _______,      _______,    _______,    _______,    _______,    _______,    _______,
   // ╰───────────┴───────────┴───────────┼───────────┼───────────┼───────────┤ ├───────────┴───────────┴───────────┴───────────┴───────────┴───────────╯
-                                          MC_CMD,     _______,    MC_CTLEN,     _______,    MC_OPT
+                                          MC_CMD,     _______,    MC_CTLEN,     _______,    _______
   //                                     ╰───────────┴───────────┴───────────╯ ╰───────────┴───────────╯
   ),
 
@@ -62,7 +62,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤ ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤
        ND_GRV,    KC_WH_U,    KC_WH_D,    SP_ASPC,    SP_ATAB,    KC_LBRC,      KC_RBRC,    KC_1,       KC_2,       KC_3,       KC_0,       KC_NO,
   // ╰───────────┴───────────┴───────────┼───────────┼───────────┼───────────┤ ├───────────┴───────────┴───────────┴───────────┴───────────┴───────────╯
-                                          _______,    _______,    XXXXXXX,      _______,    XXXXXXX
+                                          _______,    MO(_FN),    XXXXXXX,      _______,    XXXXXXX
   //                                     ╰───────────┴───────────┴───────────╯ ╰───────────┴───────────╯
   ),
 
@@ -80,7 +80,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_FN] = LAYOUT_charybdis_3x6(
   // ╭───────────┬───────────┬───────────┬───────────┬───────────┬───────────╮ ╭───────────┬───────────┬───────────┬───────────┬───────────┬───────────╮
-       KC_SLEP,   KC_PWR,     KC_NO,      KC_NO,      KC_NO,      KC_NO,        KC_NO,      KC_F7,      KC_F8,      KC_F9,      KC_F10,     KC_NO,
+       KC_SLEP,   KC_PWR,     KC_NO,      KC_NO,      KC_NO,      KC_NO,        KC_NO,      KC_F7,      KC_F8,      KC_F9,      KC_F10,     RGB_MOD,
   // ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤ ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤
        TG_DFT,    KC_NO,      KC_WBAK,    KC_NO,      KC_WFWD,    KC_NO,        KC_NO,      KC_F4,      KC_F5,      KC_F6,      KC_F11,     KC_NO,
   // ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤ ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤
@@ -92,7 +92,48 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-void pointing_device_init_user(void) {
-    set_auto_mouse_layer(_MOUSE); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
-    set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
+
+
+/* -------------------------------------------------------------------------- */
+/*                                  RGB MATRIX                                */
+/* -------------------------------------------------------------------------- */
+//https://docs.qmk.fm/#/feature_rgb_matrix?id=functions
+#define DEFAULT_BRIGHTNESS 80
+#define DEFAULT_RGB_MATRIX_MODE RGB_MATRIX_BREATHING
+
+//run at the end of the firmware's startup process
+void keyboard_post_init_user(void) {
+    rgb_matrix_enable_noeeprom();
+//     rgb_matrix_sethsv_noeeprom(HSV_TEAL);
+    rgb_matrix_mode_noeeprom(RGB_MATRIX_BREATHING);
+    rgb_matrix_set_speed_noeeprom(70);
+}
+
+// layer indicators https://docs.qmk.fm/#/feature_rgb_matrix?id=indicator-examples
+bool rgb_matrix_indicators_kb(void) {
+     switch(get_highest_layer(layer_state|default_layer_state)) {
+          case _MOUSE:
+               // rgb_matrix_mode_noeeprom(DEFAULT_RGB_MATRIX_MODE);
+               rgb_matrix_sethsv_noeeprom(HSV_BLUE);
+               break;
+          case _FN:
+               // rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+               rgb_matrix_sethsv_noeeprom(HSV_YELLOW);
+               break;
+          case _NAV:
+               // rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
+               rgb_matrix_sethsv_noeeprom(HSV_GREEN);
+               break;
+          case _MAC:
+               // rgb_matrix_mode_noeeprom(DEFAULT_RGB_MATRIX_MODE);
+               rgb_matrix_sethsv_noeeprom(HSV_WHITE);
+               break;
+          case _COLEMAK:
+               // rgb_matrix_mode_noeeprom(DEFAULT_RGB_MATRIX_MODE);
+               rgb_matrix_sethsv_noeeprom(HSV_TEAL);
+               break;
+          default:
+               break;
+     }
+return false;
 }

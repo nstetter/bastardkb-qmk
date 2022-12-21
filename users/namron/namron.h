@@ -329,16 +329,24 @@ void mac_opt_reset (qk_tap_dance_state_t *state, void *user_data) {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                                    INIT                                    */
+/*                                INIT/WAKEUP                                 */
 /* -------------------------------------------------------------------------- */
-void suspend_wakeup_init_user(void) {
-  #ifdef RGBLIGHT_ENABLE
-    rgblight_enable();
-  #endif
-  #ifdef OLED_ENABLED
-  oled_on();
-  #endif
-  }
+
+
+void suspend_wakeup_init_kb(void)
+{
+  // re-enable rgb matrix on wakeup
+     #ifdef RGB_MATRIX_ENABLE
+          rgb_matrix_set_suspend_state(false);
+     #endif
+}
+
+void pointing_device_init_user(void) {
+    set_auto_mouse_layer(_MOUSE); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
+    set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
+}
+
+
 
 // sync layer_state and default_layer_state (from EEPORM) on init
 void matrix_init_user(void) {
@@ -348,13 +356,11 @@ void matrix_init_user(void) {
 /* -------------------------------------------------------------------------- */
 /*                                  SHUTDOWN                                  */
 /* -------------------------------------------------------------------------- */
-void suspend_power_down_user(void) {
-  #ifdef RGBLIGHT_ENABLE
-    rgblight_disable();
-  #endif
-  #ifdef OLED_ENABLE
-  oled_off();
-  #endif
+void suspend_power_down_kb(void)
+{
+     #ifdef RGB_MATRIX_ENABLE
+          rgb_matrix_set_suspend_state(true);
+     #endif
 }
 
 /* -------------------------------------------------------------------------- */
@@ -471,14 +477,4 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
-void matrix_scan_user(void) {
-    // helper for ALT-TABBING with encoder
-    #ifdef ENCODER_ENABLE
-    if (is_alt_tab_active) {
-        if (timer_elapsed(alt_tab_timer) > 1000) {
-            unregister_code(KC_LALT);
-            is_alt_tab_active = false;
-        }
-    }
-    #endif
-}
+
