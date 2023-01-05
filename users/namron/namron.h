@@ -24,11 +24,11 @@
 
 #define SP_NAV LT(_NAV,KC_SPC) //SPACE when pressed, _NAV layer when hold
 
-#define SP_ALTESC LOPT_T(KC_ESC) //ESC when pressed, L-ALT (L-OPT) when hold
+#define SP_ESCINT LT(_INT,KC_ESC) //ESC when pressed, _INT layer when hold
 
 #define SP_SHBS LSFT_T(KC_BSPC) //Backspace when pressed, Shift when hold
 
-#define SP_CTL TD(TD_CTL) //CTL on press/hold, CTL+SHIFT on double press/hold, CTL+ALT on triple press/hold
+#define SP_CTL TD(TD_CTL) //CTL on press/hold, ALT on double press/hold
 
 #define SP_FN LT(_FN,KC_DEL) //DEL when pressed, _FN when hold
 
@@ -37,14 +37,6 @@
 #define MC_CTLEN MT(MOD_LCTL,KC_ENT)  //Enter when pressed, CTL when hold
 #define MC_CMD TD(TDM_CMD) //CMD on press/hold CMD+SHIFT on double press/hold, CMD+OPT on triple press/hold
 #define MC_OPT TD(TDM_OPT) //OPT on press/hold OPT+SHIFT on double press/hold, OPT+CTL on triple press/hold
-
-/* --------------------------------- colors --------------------------------- */
-#define HSV_MY_PURPLE 191, 255, DEFAULT_BRIGHTNESS
-#define HSV_MY_MAGENTA 213, 255, DEFAULT_BRIGHTNESS
-#define HSV_MY_ORANGE  28, 255, DEFAULT_BRIGHTNESS
-#define HSV_MY_GREEN 90, 255, DEFAULT_BRIGHTNESS
-#define HSV_MY_CYAN 187, 56, DEFAULT_BRIGHTNESS
-#define HSV_MY_TURQUOISE 120, 240, DEFAULT_BRIGHTNESS
 
 /* -------------------------------------------------------------------------- */
 /*                                  FUNCTIONS                                 */
@@ -65,18 +57,10 @@ void register_code_nomod(int keycode) {
   set_mods(temp_mods);
 }
 
-// function to input umlauts on Mac using ALT+U combo
-void tap_umlaut_mac(int keycode) {
-  uint8_t temp_mods = get_mods();
-  clear_mods();
-  tap_code16(LOPT(KC_U));
-  set_mods(temp_mods);
-  tap_code(keycode);
-}
-
 enum layer_names {
   _COLEMAK,
   _MAC,
+  _INT,
   _NAV,
   _MOUSE,
   _FN,
@@ -94,11 +78,6 @@ enum custom_keycodes {
   ND_GRV,
   ND_QUOT,
   TG_DFT,
-  DE_ae,
-  DE_oe,
-  DE_ss,
-  DE_ue,
-  DE_eur,
 };
 
 // variables for ALT-TABBING with encoder
@@ -197,13 +176,7 @@ void ctl_finished (qk_tap_dance_state_t *state, void *user_data) {
         break;
     case DOUBLE_TAP:
     case DOUBLE_HOLD:
-        register_code(KC_LCTL);
-        register_code(KC_LSFT);
-        break;
-    case TRIPLE_TAP:
-    case TRIPLE_HOLD:
-        register_code(KC_LCTL);
-        register_code(KC_LALT);
+        register_code(KC_LOPT);
         break;
   }
 }
@@ -217,13 +190,7 @@ void ctl_reset (qk_tap_dance_state_t *state, void *user_data) {
         break;
     case DOUBLE_TAP:
     case DOUBLE_HOLD:
-        unregister_code(KC_LCTL);
-        unregister_code(KC_LSFT);
-        break;
-    case TRIPLE_TAP:
-    case TRIPLE_HOLD:
-        unregister_code(KC_LCTL);
-        unregister_code(KC_LALT);
+        unregister_code(KC_LOPT);
         break;
     }
   ctl_tap_state.state = 0;
@@ -341,6 +308,7 @@ void suspend_wakeup_init_kb(void)
      #endif
 }
 
+// auto-mouse: https://github.com/qmk/qmk_firmware/pull/17962
 void pointing_device_init_user(void) {
     set_auto_mouse_layer(_MOUSE); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
     set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
@@ -424,52 +392,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       } else {
         //
-      }
-      return false;
-      break;
-    case DE_ae:
-      if (record->event.pressed) {
-        if (IS_LAYER_ON(_MAC)) {
-          tap_umlaut_mac(KC_A);
-        } else {
-          tap_code16(RALT(KC_Q));
-        }
-      }
-      return false;
-      break;
-    case DE_oe:
-      if (record->event.pressed) {
-        if (IS_LAYER_ON(_MAC)) {
-          tap_umlaut_mac(KC_O);
-        } else {
-          tap_code16(RALT(KC_P));
-        }
-      }
-      return false;
-      break;
-    case DE_ue:
-      if (record->event.pressed) {
-        if (IS_LAYER_ON(_MAC)) {
-          tap_umlaut_mac(KC_U);
-        } else {
-          tap_code16(RALT(KC_Y));
-        }
-      }
-      return false;
-      break;
-    case DE_ss:
-      if (record->event.pressed) {
-        tap_code16(RALT(KC_S));
-      }
-      return false;
-      break;
-    case DE_eur:
-      if (record->event.pressed) {
-        if (IS_LAYER_ON(_MAC)) {
-          tap_code16(LSFT(RALT(KC_2)));
-        } else {
-        tap_code16(RALT(KC_5));
-        }
       }
       return false;
       break;

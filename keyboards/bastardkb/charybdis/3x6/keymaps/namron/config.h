@@ -32,3 +32,4 @@
 
 // sync layer state for layer indication
 #define SPLIT_LAYER_STATE_ENABLE
+#define SPLIT_TRANSPORT_MIRROR

@@ -16,7 +16,7 @@
  */
 #include QMK_KEYBOARD_H
 #include "namron.h"
-
+#include "keymap_us_international.h"
 // enum charybdis_keymap_layers {
 //     _COLEMAK = 0,
 //     _MAC,
@@ -26,7 +26,6 @@
 // };
 
 
-// auto-mouse: https://github.com/qmk/qmk_firmware/pull/17962
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -38,7 +37,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤ ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤
        KC_BSLS,   KC_Z,       KC_X,       KC_C,       KC_D,       KC_V,         KC_K,       KC_H,       KC_COMM,    KC_DOT,     KC_SLSH,    KC_MINS,
   // ╰───────────┴───────────┴───────────┼───────────┼───────────┼───────────┤ ├───────────┴───────────┴───────────┴───────────┴───────────┴───────────╯
-                                          SP_CTL,     SP_SHBS,    SP_SUENT,     SP_ALTESC,  SP_NAV
+                                          SP_CTL,     SP_SHBS,    SP_SUENT,     SP_ESCINT,  SP_NAV
   //                                     ╰───────────┴───────────┴───────────╯ ╰───────────┴───────────╯
   ),
 
@@ -51,6 +50,18 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        _______,   _______,    _______,    _______,    _______,    _______,      _______,    _______,    _______,    _______,    _______,    _______,
   // ╰───────────┴───────────┴───────────┼───────────┼───────────┼───────────┤ ├───────────┴───────────┴───────────┴───────────┴───────────┴───────────╯
                                           MC_CMD,     _______,    MC_CTLEN,     _______,    _______
+  //                                     ╰───────────┴───────────┴───────────╯ ╰───────────┴───────────╯
+  ),
+
+  [_INT] = LAYOUT_charybdis_3x6(
+  // ╭───────────┬───────────┬───────────┬───────────┬───────────┬───────────╮ ╭───────────┬───────────┬───────────┬───────────┬───────────┬───────────╮
+       _______,   _______,    _______,    _______,    _______,    _______,      _______,    _______,    US_UDIA,    _______,    _______,    _______,
+  // ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤ ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤
+       _______,   US_ADIA,    _______,    US_SS,      _______,    _______,      _______,    _______,    US_EURO,    _______,    US_ODIA,    _______,
+  // ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤ ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤
+       _______,   _______,    _______,    _______,    _______,    _______,      _______,    _______,    _______,    _______,    _______,    _______,
+  // ╰───────────┴───────────┴───────────┼───────────┼───────────┼───────────┤ ├───────────┴───────────┴───────────┴───────────┴───────────┴───────────╯
+                                          _______,     _______,    _______,     _______,    _______
   //                                     ╰───────────┴───────────┴───────────╯ ╰───────────┴───────────╯
   ),
 
@@ -99,7 +110,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* -------------------------------------------------------------------------- */
 //https://docs.qmk.fm/#/feature_rgb_matrix?id=functions
 #define DEFAULT_BRIGHTNESS 80
+#define RGB_MATRIX_MAXIMUM_BRIGHTNESS 100
 #define DEFAULT_RGB_MATRIX_MODE RGB_MATRIX_BREATHING
+#define HSV_DEFAULT HSV_TEAL
+#define RGB_ACCENT RGB_CYAN
 
 //run at the end of the firmware's startup process
 void keyboard_post_init_user(void) {
@@ -114,25 +128,44 @@ bool rgb_matrix_indicators_kb(void) {
      switch(get_highest_layer(layer_state|default_layer_state)) {
           case _MOUSE:
                // rgb_matrix_mode_noeeprom(DEFAULT_RGB_MATRIX_MODE);
-               rgb_matrix_sethsv_noeeprom(HSV_BLUE);
+               // rgb_matrix_sethsv_noeeprom(HSV_BLUE);
+               rgb_matrix_set_color(34, RGB_ACCENT);
+               rgb_matrix_set_color(31, RGB_ACCENT);
+               rgb_matrix_set_color(28, RGB_ACCENT);
                break;
           case _FN:
                // rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
-               rgb_matrix_sethsv_noeeprom(HSV_YELLOW);
+               // rgb_matrix_sethsv_noeeprom(HSV_YELLOW);
+               rgb_matrix_set_color(0, RGB_ACCENT);
+               rgb_matrix_set_color(5, RGB_ACCENT);
+               rgb_matrix_set_color(6, RGB_ACCENT);
+               rgb_matrix_set_color(11, RGB_ACCENT);
+               rgb_matrix_set_color(12, RGB_ACCENT);
+               rgb_matrix_set_color(15, RGB_ACCENT);
+               rgb_matrix_set_color(21, RGB_ACCENT);
+               rgb_matrix_set_color(26, RGB_ACCENT);
+               rgb_matrix_set_color(27, RGB_ACCENT);
+               rgb_matrix_set_color(32, RGB_ACCENT);
+               rgb_matrix_set_color(33, RGB_ACCENT);
+               rgb_matrix_set_color(36, RGB_ACCENT);
+               // MAC toggle
+               rgb_matrix_set_color(1, RGB_ACCENT);
                break;
           case _NAV:
                // rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
-               rgb_matrix_sethsv_noeeprom(HSV_GREEN);
+               // rgb_matrix_sethsv_noeeprom(HSV_GREEN);
+               rgb_matrix_set_color(7, RGB_ACCENT);
+               rgb_matrix_set_color(10, RGB_ACCENT);
+               rgb_matrix_set_color(11, RGB_ACCENT);
+               rgb_matrix_set_color(13, RGB_ACCENT);
                break;
           case _MAC:
                // rgb_matrix_mode_noeeprom(DEFAULT_RGB_MATRIX_MODE);
-               rgb_matrix_sethsv_noeeprom(HSV_WHITE);
-               break;
-          case _COLEMAK:
-               // rgb_matrix_mode_noeeprom(DEFAULT_RGB_MATRIX_MODE);
-               rgb_matrix_sethsv_noeeprom(HSV_TEAL);
+               rgb_matrix_set_color(18, RGB_CORAL);
+               rgb_matrix_set_color(20, RGB_CORAL);
                break;
           default:
+               rgb_matrix_sethsv_noeeprom(HSV_DEFAULT);
                break;
      }
 return false;
