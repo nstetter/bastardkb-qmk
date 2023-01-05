@@ -76,7 +76,7 @@ enum custom_keycodes {
   MOD2,
   MOD3,
   ND_GRV,
-  ND_QUOT,
+  ND_QUOTE,
   TG_DFT,
 };
 
@@ -373,7 +373,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-    case ND_QUOT:
+    case ND_QUOTE:
       if (record->event.pressed) {
         tap_code(KC_QUOT);
         tap_code_nomod(KC_SPC);
