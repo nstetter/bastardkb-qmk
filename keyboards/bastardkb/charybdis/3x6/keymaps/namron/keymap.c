@@ -113,7 +113,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #define RGB_MATRIX_MAXIMUM_BRIGHTNESS 100
 #define DEFAULT_RGB_MATRIX_MODE RGB_MATRIX_BREATHING
 #define HSV_DEFAULT HSV_TEAL
-#define RGB_ACCENT RGB_CYAN
+#define RGB_ACCENT RGB_CORAL
 
 //run at the end of the firmware's startup process
 void keyboard_post_init_user(void) {

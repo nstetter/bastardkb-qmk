@@ -215,14 +215,8 @@ void mac_cmd_finished (qk_tap_dance_state_t *state, void *user_data) {
         break;
     case DOUBLE_TAP:
     case DOUBLE_HOLD:
-        register_code(KC_LSFT);
-        register_code(KC_LCMD);
+        register_code(KC_LOPT);
         break;
-    case TRIPLE_TAP:
-    case TRIPLE_HOLD:
-         register_code(KC_LOPT);
-         register_code(KC_LCMD);
-         break;
   }
 }
 
@@ -234,13 +228,7 @@ void mac_cmd_reset (qk_tap_dance_state_t *state, void *user_data) {
         break;
     case DOUBLE_TAP:
     case DOUBLE_HOLD:
-        unregister_code(KC_LSFT);
-        unregister_code(KC_LCMD);
-        break;
-    case TRIPLE_TAP:
-    case TRIPLE_HOLD:
         unregister_code(KC_LOPT);
-        unregister_code(KC_LCMD);
         break;
     }
   mac_cmd_tap_state.state = 0;
