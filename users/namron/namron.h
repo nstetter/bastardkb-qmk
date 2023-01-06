@@ -113,8 +113,6 @@ enum {
   DOUBLE_TAP = 3,
   DOUBLE_HOLD = 4,
   DOUBLE_SINGLE_TAP = 5, //send two single taps
-  TRIPLE_TAP = 6,
-  TRIPLE_HOLD = 7
 };
 
 
@@ -155,10 +153,6 @@ int cur_dance (qk_tap_dance_state_t *state) {
     if (state->interrupted) return DOUBLE_SINGLE_TAP;
     else if (state->pressed) return DOUBLE_HOLD;
     else return DOUBLE_TAP;
-  }
-  if (state->count == 3) {
-    if (state->interrupted || !state->pressed)  return TRIPLE_TAP;
-    else return TRIPLE_HOLD;
   }
   else return 8; //magic number. At some point this method will expand to work for more presses
 }
@@ -269,11 +263,6 @@ void mac_opt_finished (qk_tap_dance_state_t *state, void *user_data) {
         register_code(KC_LSFT);
         register_code(KC_ROPT);
         break;
-    case TRIPLE_TAP:
-    case TRIPLE_HOLD:
-        register_code(KC_ROPT);
-        register_code(KC_LCTL);
-        break;
   }
 }
 
@@ -288,11 +277,6 @@ void mac_opt_reset (qk_tap_dance_state_t *state, void *user_data) {
         unregister_code(KC_LSFT);
         unregister_code(KC_ROPT);
         break;
-    case TRIPLE_TAP:
-    case TRIPLE_HOLD:
-         unregister_code(KC_ROPT);
-         unregister_code(KC_LCTL);
-         break;
     }
   mac_opt_tap_state.state = 0;
 }
