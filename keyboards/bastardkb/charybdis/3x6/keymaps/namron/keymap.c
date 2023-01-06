@@ -90,9 +90,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_FN] = LAYOUT_charybdis_3x6(
   // ╭───────────┬───────────┬───────────┬───────────┬───────────┬───────────╮ ╭───────────┬───────────┬───────────┬───────────┬───────────┬───────────╮
-       KC_SLEP,   KC_PWR,     KC_NO,      KC_NO,      KC_NO,      KC_NO,        KC_NO,      KC_F7,      KC_F8,      KC_F9,      KC_F10,     RGB_MOD,
+       KC_F1,     KC_F2,      KC_F3,      KC_F4,      KC_F5,      KC_F6,        KC_F7,      KC_F8,      KC_F9,      KC_F10,     KC_F11,     KC_F12,
   // ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤ ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤
-       TG_DFT,    KC_NO,      KC_WBAK,    KC_NO,      KC_WFWD,    KC_NO,        KC_NO,      KC_F4,      KC_F5,      KC_F6,      KC_F11,     KC_NO,
+       TG_DFT,    KC_EXLM,    KC_AT,      KC_HASH,    KC_DLR,     KC_NO,        KC_NO,      KC_PERC,    KC_CIRC,    KC_AMPR,    KC_ASTR,    KC_NO,
   // ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤ ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤
        KC_NO,     KC_NO,      KC_NO,      KC_NO,      KC_NO,      KC_NO,        KC_NO,      KC_F1,      KC_F2,      KC_F3,      KC_F12,     KC_NO,
   // ╰───────────┴───────────┴───────────┼───────────┼───────────┼───────────┤ ├───────────┴───────────┴───────────┴───────────┴───────────┴───────────╯
@@ -116,9 +116,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 //run at the end of the firmware's startup process
 void keyboard_post_init_user(void) {
-    rgb_matrix_enable_noeeprom();
-    rgb_matrix_mode_noeeprom(DEFAULT_RGB_MATRIX_MODE);
-    rgb_matrix_set_speed_noeeprom(70);
+     rgb_matrix_enable_noeeprom();
+     rgb_matrix_mode_noeeprom(DEFAULT_RGB_MATRIX_MODE);
+     rgb_matrix_sethsv_noeeprom(HSV_DEFAULT);
+     rgb_matrix_set_speed_noeeprom(70);
 }
 
 // layer indicators https://docs.qmk.fm/#/feature_rgb_matrix?id=indicator-examples
@@ -134,20 +135,16 @@ bool rgb_matrix_indicators_kb(void) {
           case _FN:
                // rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);
                // rgb_matrix_sethsv_noeeprom(HSV_YELLOW);
-               rgb_matrix_set_color(0, RGB_ACCENT);
-               rgb_matrix_set_color(5, RGB_ACCENT);
-               rgb_matrix_set_color(6, RGB_ACCENT);
-               rgb_matrix_set_color(11, RGB_ACCENT);
-               rgb_matrix_set_color(12, RGB_ACCENT);
-               rgb_matrix_set_color(15, RGB_ACCENT);
-               rgb_matrix_set_color(21, RGB_ACCENT);
-               rgb_matrix_set_color(26, RGB_ACCENT);
-               rgb_matrix_set_color(27, RGB_ACCENT);
-               rgb_matrix_set_color(32, RGB_ACCENT);
-               rgb_matrix_set_color(33, RGB_ACCENT);
-               rgb_matrix_set_color(36, RGB_ACCENT);
+               rgb_matrix_set_color(4, RGB_ACCENT);
+               rgb_matrix_set_color(7, RGB_ACCENT);
+               rgb_matrix_set_color(10, RGB_ACCENT);
+               rgb_matrix_set_color(13, RGB_ACCENT);
+               rgb_matrix_set_color(25, RGB_ACCENT);
+               rgb_matrix_set_color(28, RGB_ACCENT);
+               rgb_matrix_set_color(31, RGB_ACCENT);
+               rgb_matrix_set_color(34, RGB_ACCENT);
                // MAC toggle
-               rgb_matrix_set_color(1, RGB_ACCENT);
+               rgb_matrix_set_color(1, RGB_CORAL);
                break;
           case _NAV:
                // rgb_matrix_mode_noeeprom(RGB_MATRIX_SOLID_COLOR);

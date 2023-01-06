@@ -33,3 +33,5 @@
 // sync layer state for layer indication
 #define SPLIT_LAYER_STATE_ENABLE
 // #define SPLIT_TRANSPORT_MIRROR
+
+#define USB_SUSPEND_WAKEUP_DELAY 250
