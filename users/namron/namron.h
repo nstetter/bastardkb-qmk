@@ -57,6 +57,15 @@ void register_code_nomod(int keycode) {
   set_mods(temp_mods);
 }
 
+// function to input umlauts on Mac using ALT+U combo
+void tap_umlaut_mac(int keycode) {
+  uint8_t temp_mods = get_mods();
+  clear_mods();
+  tap_code16(LOPT(KC_U));
+  set_mods(temp_mods);
+  tap_code(keycode);
+}
+
 enum layer_names {
   _COLEMAK,
   _MAC,
@@ -78,6 +87,11 @@ enum custom_keycodes {
   ND_GRV,
   ND_QUOTE,
   TG_DFT,
+  DE_ae,
+  DE_oe,
+  DE_ss,
+  DE_ue,
+  DE_eur,
 };
 
 // variables for ALT-TABBING with encoder
@@ -383,6 +397,53 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
+    case DE_ae:
+      if (record->event.pressed) {
+        if (IS_LAYER_ON(_MAC)) {
+          tap_umlaut_mac(KC_A);
+        } else {
+          tap_code16(RALT(KC_Q));
+        }
+      }
+      return false;
+      break;
+    case DE_oe:
+      if (record->event.pressed) {
+        if (IS_LAYER_ON(_MAC)) {
+          tap_umlaut_mac(KC_O);
+        } else {
+          tap_code16(RALT(KC_P));
+        }
+      }
+      return false;
+      break;
+    case DE_ue:
+      if (record->event.pressed) {
+        if (IS_LAYER_ON(_MAC)) {
+          tap_umlaut_mac(KC_U);
+        } else {
+          tap_code16(RALT(KC_Y));
+        }
+      }
+      return false;
+      break;
+    case DE_ss:
+      if (record->event.pressed) {
+        tap_code16(RALT(KC_S));
+      }
+      return false;
+      break;
+    case DE_eur:
+      if (record->event.pressed) {
+        if (IS_LAYER_ON(_MAC)) {
+          tap_code16(LSFT(RALT(KC_2)));
+        } else {
+        tap_code16(RALT(KC_5));
+        }
+      }
+      return false;
+      break;
+
     }
   return true;
 }
