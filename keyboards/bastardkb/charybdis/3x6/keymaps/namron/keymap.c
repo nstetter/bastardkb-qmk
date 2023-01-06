@@ -110,15 +110,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 //https://docs.qmk.fm/#/feature_rgb_matrix?id=functions
 #define DEFAULT_BRIGHTNESS 80
 #define RGB_MATRIX_MAXIMUM_BRIGHTNESS 100
-#define DEFAULT_RGB_MATRIX_MODE RGB_MATRIX_BREATHING
+#define DEFAULT_RGB_MATRIX_MODE RGB_MATRIX_SOLID_COLOR
 #define HSV_DEFAULT HSV_TEAL
 #define RGB_ACCENT RGB_CORAL
 
 //run at the end of the firmware's startup process
 void keyboard_post_init_user(void) {
     rgb_matrix_enable_noeeprom();
-//     rgb_matrix_sethsv_noeeprom(HSV_TEAL);
-    rgb_matrix_mode_noeeprom(RGB_MATRIX_BREATHING);
+    rgb_matrix_mode_noeeprom(DEFAULT_RGB_MATRIX_MODE);
     rgb_matrix_set_speed_noeeprom(70);
 }
 
