@@ -36,7 +36,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤ ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤
        KC_BSLS,   KC_Z,       KC_X,       KC_C,       KC_D,       KC_V,         KC_K,       KC_H,       KC_COMM,    KC_DOT,     KC_SLSH,    KC_MINS,
   // ╰───────────┴───────────┴───────────┼───────────┼───────────┼───────────┤ ├───────────┴───────────┴───────────┴───────────┴───────────┴───────────╯
-                                          SP_CTL,     SP_SHBS,    SP_SUENT,     SP_ESCINT,  SP_NAV
+                                          KC_LCTL,     SP_SHBS,    SP_SUENT,     SP_ESCINT,  SP_NAV
   //                                     ╰───────────┴───────────┴───────────╯ ╰───────────┴───────────╯
   ),
 
@@ -48,7 +48,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤ ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤
        _______,   _______,    _______,    _______,    _______,    _______,      _______,    _______,    _______,    _______,    _______,    _______,
   // ╰───────────┴───────────┴───────────┼───────────┼───────────┼───────────┤ ├───────────┴───────────┴───────────┴───────────┴───────────┴───────────╯
-                                          MC_CMD,     _______,    MC_CTLEN,     _______,    _______
+                                          KC_LCMD,    _______,    MC_CTLEN,     _______,    _______
   //                                     ╰───────────┴───────────┴───────────╯ ╰───────────┴───────────╯
   ),
 
@@ -60,7 +60,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤ ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤
        _______,   _______,    _______,    _______,    _______,    _______,      _______,    _______,    _______,    _______,    _______,    _______,
   // ╰───────────┴───────────┴───────────┼───────────┼───────────┼───────────┤ ├───────────┴───────────┴───────────┴───────────┴───────────┴───────────╯
-                                          _______,     _______,    _______,     _______,    _______
+                                          SP_CHORD1,  KC_LOPT,    SP_CHORD2,    _______,    _______
   //                                     ╰───────────┴───────────┴───────────╯ ╰───────────┴───────────╯
   ),
 
@@ -124,7 +124,18 @@ void keyboard_post_init_user(void) {
 
 // layer indicators https://docs.qmk.fm/#/feature_rgb_matrix?id=indicator-examples
 bool rgb_matrix_indicators_kb(void) {
-     switch(get_highest_layer(layer_state|default_layer_state)) {
+     //default-layer
+     switch(get_highest_layer(default_layer_state)) {
+          case _MAC:
+               // rgb_matrix_mode_noeeprom(DEFAULT_RGB_MATRIX_MODE);
+               rgb_matrix_set_color(20, RGB_CORAL);
+               break;
+          default:
+               rgb_matrix_sethsv_noeeprom(HSV_DEFAULT);
+               break;
+     }
+     //function-layers
+     switch(get_highest_layer(layer_state)) {
           case _MOUSE:
                // rgb_matrix_mode_noeeprom(DEFAULT_RGB_MATRIX_MODE);
                // rgb_matrix_sethsv_noeeprom(HSV_BLUE);
@@ -153,14 +164,6 @@ bool rgb_matrix_indicators_kb(void) {
                rgb_matrix_set_color(10, RGB_ACCENT);
                rgb_matrix_set_color(11, RGB_ACCENT);
                rgb_matrix_set_color(13, RGB_ACCENT);
-               break;
-          case _MAC:
-               // rgb_matrix_mode_noeeprom(DEFAULT_RGB_MATRIX_MODE);
-               rgb_matrix_set_color(18, RGB_CORAL);
-               rgb_matrix_set_color(20, RGB_CORAL);
-               break;
-          default:
-               rgb_matrix_sethsv_noeeprom(HSV_DEFAULT);
                break;
      }
 return false;

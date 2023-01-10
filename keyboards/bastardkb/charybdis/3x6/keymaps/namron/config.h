@@ -2,7 +2,7 @@
 #define TAPPING_TOGGLE 2
 
 //timeout for tap dance
-#define TAPPING_TERM 175
+#define TAPPING_TERM 150
 
 //Time (in ms) before the one shot key is released
 #define ONESHOT_TIMEOUT 2000

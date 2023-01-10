@@ -19,24 +19,18 @@
 #define SP_ASPC LALT(KC_SPC) //ALT+SPC
 #define SP_MID LSFT(KC_BTN3) //SHIFT+MIDDLEMOUSE
 
+// layer modifiers
 #define SP_SUENT MT(MOD_LGUI,KC_ENT)  //Enter when pressed, Super when hold
-//#define SP_ESALT MT(MOD_LALT,KC_ESC)  //Escape when pressed, ALT when hold
-
 #define SP_NAV LT(_NAV,KC_SPC) //SPACE when pressed, _NAV layer when hold
-
 #define SP_ESCINT LT(_INT,KC_ESC) //ESC when pressed, _INT layer when hold
-
 #define SP_SHBS LSFT_T(KC_BSPC) //Backspace when pressed, Shift when hold
-
-#define SP_CTL TD(TD_CTL) //CTL on press/hold, ALT on double press/hold
-
 #define SP_FN LT(_FN,KC_DEL) //DEL when pressed, _FN when hold
-
+// #define SP_CTL TD(TD_CTL) //CTL on press/hold, ALT on double press/hold
 
 // MAC specific special keys
 #define MC_CTLEN MT(MOD_LCTL,KC_ENT)  //Enter when pressed, CTL when hold
-#define MC_CMD TD(TDM_CMD) //CMD on press/hold CMD+SHIFT on double press/hold, CMD+OPT on triple press/hold
-#define MC_OPT TD(TDM_OPT) //OPT on press/hold OPT+SHIFT on double press/hold, OPT+CTL on triple press/hold
+// #define MC_CMD TD(TDM_CMD) //CMD on press/hold CMD+SHIFT on double press/hold, CMD+OPT on triple press/hold
+// #define MC_OPT TD(TDM_OPT) //OPT on press/hold OPT+SHIFT on double press/hold, OPT+CTL on triple press/hold
 
 /* -------------------------------------------------------------------------- */
 /*                                  FUNCTIONS                                 */
@@ -92,47 +86,43 @@ enum custom_keycodes {
   DE_ss,
   DE_ue,
   DE_eur,
+  SP_CHORD1,
+  SP_CHORD2,
 };
-
-// variables for ALT-TABBING with encoder
-#ifdef ENCODER_ENABLE
-bool is_alt_tab_active = false;
-uint16_t alt_tab_timer = 0;
-#endif
 
 // tap-dance struct
-typedef struct {
-  bool is_press_action;
-  int state;
-} tap;
+// typedef struct {
+//   bool is_press_action;
+//   int state;
+// } tap;
 
 //Define a type for as many tap dance states as you need
-enum {
-  SINGLE_TAP = 1,
-  SINGLE_HOLD = 2,
-  DOUBLE_TAP = 3,
-  DOUBLE_HOLD = 4,
-  DOUBLE_SINGLE_TAP = 5, //send two single taps
-};
+// enum {
+//   SINGLE_TAP = 1,
+//   SINGLE_HOLD = 2,
+//   DOUBLE_TAP = 3,
+//   DOUBLE_HOLD = 4,
+//   DOUBLE_SINGLE_TAP = 5, //send two single taps
+// };
 
 
 //Tap dance enums
-enum {
-  TD_CTL = 0,
-  TDM_CMD,
-  TDM_OPT,
-};
+// enum {
+//   TD_CTL = 0,
+//   TDM_CMD,
+//   TDM_OPT,
+// };
 
 //Function associated with all tap dances
-int cur_dance (qk_tap_dance_state_t *state);
+// int cur_dance (qk_tap_dance_state_t *state);
 
 //Functions associated with individual tap dances
-void ctl_finished (qk_tap_dance_state_t *state, void *user_data);
-void ctl_reset (qk_tap_dance_state_t *state, void *user_data);
-void mac_cmd_finished (qk_tap_dance_state_t *state, void *user_data);
-void mac_cmd_reset (qk_tap_dance_state_t *state, void *user_data);
-void mac_opt_finished (qk_tap_dance_state_t *state, void *user_data);
-void mac_opt_reset (qk_tap_dance_state_t *state, void *user_data);
+// void ctl_finished (qk_tap_dance_state_t *state, void *user_data);
+// void ctl_reset (qk_tap_dance_state_t *state, void *user_data);
+// void mac_cmd_finished (qk_tap_dance_state_t *state, void *user_data);
+// void mac_cmd_reset (qk_tap_dance_state_t *state, void *user_data);
+// void mac_opt_finished (qk_tap_dance_state_t *state, void *user_data);
+// void mac_opt_reset (qk_tap_dance_state_t *state, void *user_data);
 
 
 /* -------------------------------------------------------------------------- */
@@ -143,143 +133,143 @@ void mac_opt_reset (qk_tap_dance_state_t *state, void *user_data);
 /* --------------------------------- GLOBAL --------------------------------- */
 
 //Determine the current tap dance state
-int cur_dance (qk_tap_dance_state_t *state) {
-  if (state->count == 1) {
-    if (state->interrupted || !state->pressed)  return SINGLE_TAP;
-    //key has not been interrupted, but the key is still held. Means you want to send a 'HOLD'.
-    else return SINGLE_HOLD;
-  }
-  else if (state->count == 2) {
-    if (state->interrupted) return DOUBLE_SINGLE_TAP;
-    else if (state->pressed) return DOUBLE_HOLD;
-    else return DOUBLE_TAP;
-  }
-  else return 8; //magic number. At some point this method will expand to work for more presses
-}
+// int cur_dance (qk_tap_dance_state_t *state) {
+//   if (state->count == 1) {
+//     if (state->interrupted || !state->pressed)  return SINGLE_TAP;
+//     //key has not been interrupted, but the key is still held. Means you want to send a 'HOLD'.
+//     else return SINGLE_HOLD;
+//   }
+//   else if (state->count == 2) {
+//     if (state->interrupted) return DOUBLE_SINGLE_TAP;
+//     else if (state->pressed) return DOUBLE_HOLD;
+//     else return DOUBLE_TAP;
+//   }
+//   else return 8; //magic number. At some point this method will expand to work for more presses
+// }
 
 //Associate our tap dance keys with its functionality
-qk_tap_dance_action_t tap_dance_actions[] = {
-  [TD_CTL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ctl_finished, ctl_reset),
-  [TDM_CMD] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, mac_cmd_finished, mac_cmd_reset),
-  [TDM_OPT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, mac_opt_finished, mac_opt_reset)
-};
+// qk_tap_dance_action_t tap_dance_actions[] = {
+//   [TD_CTL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ctl_finished, ctl_reset),
+//   [TDM_CMD] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, mac_cmd_finished, mac_cmd_reset),
+//   [TDM_OPT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, mac_opt_finished, mac_opt_reset)
+// };
 
 /* --------------------------------- TD_CTL --------------------------------- */
 
 //Initialize tap structure associated with tap dance key
-static tap ctl_tap_state = {
-  .is_press_action = true,
-  .state = 0
-};
+// static tap ctl_tap_state = {
+//   .is_press_action = true,
+//   .state = 0
+// };
 
 //Functions that control what our tap dance key does
-void ctl_finished (qk_tap_dance_state_t *state, void *user_data) {
-  ctl_tap_state.state = cur_dance(state);
-  switch (ctl_tap_state.state) {
-    case SINGLE_TAP:
-        set_oneshot_mods(MOD_LCTL);
-        break;
-    case SINGLE_HOLD:
-        register_code(KC_LCTL);
-        break;
-    case DOUBLE_TAP:
-    case DOUBLE_HOLD:
-        register_code(KC_LOPT);
-        break;
-  }
-}
+// void ctl_finished (qk_tap_dance_state_t *state, void *user_data) {
+//   ctl_tap_state.state = cur_dance(state);
+//   switch (ctl_tap_state.state) {
+//     case SINGLE_TAP:
+//         set_oneshot_mods(MOD_LCTL);
+//         break;
+//     case SINGLE_HOLD:
+//         register_code(KC_LCTL);
+//         break;
+//     case DOUBLE_TAP:
+//     case DOUBLE_HOLD:
+//         register_code(KC_LOPT);
+//         break;
+//   }
+// }
 
-void ctl_reset (qk_tap_dance_state_t *state, void *user_data) {
-  switch (ctl_tap_state.state) {
-    case SINGLE_TAP:
-        break;
-    case SINGLE_HOLD:
-        unregister_code(KC_LCTL);
-        break;
-    case DOUBLE_TAP:
-    case DOUBLE_HOLD:
-        unregister_code(KC_LOPT);
-        break;
-    }
-  ctl_tap_state.state = 0;
-}
+// void ctl_reset (qk_tap_dance_state_t *state, void *user_data) {
+//   switch (ctl_tap_state.state) {
+//     case SINGLE_TAP:
+//         break;
+//     case SINGLE_HOLD:
+//         unregister_code(KC_LCTL);
+//         break;
+//     case DOUBLE_TAP:
+//     case DOUBLE_HOLD:
+//         unregister_code(KC_LOPT);
+//         break;
+//     }
+//   ctl_tap_state.state = 0;
+// }
 
 
 /* -------------------------------- TDM_CMD --------------------------------- */
 
 //Initialize tap structure associated with tap dance key
-static tap mac_cmd_tap_state = {
-  .is_press_action = true,
-  .state = 0
-};
+// static tap mac_cmd_tap_state = {
+//   .is_press_action = true,
+//   .state = 0
+// };
 
 //Functions that control what our tap dance key does
-void mac_cmd_finished (qk_tap_dance_state_t *state, void *user_data) {
-  mac_cmd_tap_state.state = cur_dance(state);
-  switch (mac_cmd_tap_state.state) {
-    case SINGLE_TAP:
-    case SINGLE_HOLD:
-        register_code(KC_LCMD);
-        break;
-    case DOUBLE_TAP:
-    case DOUBLE_HOLD:
-        register_code(KC_LOPT);
-        break;
-  }
-}
+// void mac_cmd_finished (qk_tap_dance_state_t *state, void *user_data) {
+//   mac_cmd_tap_state.state = cur_dance(state);
+//   switch (mac_cmd_tap_state.state) {
+//     case SINGLE_TAP:
+//     case SINGLE_HOLD:
+//         register_code(KC_LCMD);
+//         break;
+//     case DOUBLE_TAP:
+//     case DOUBLE_HOLD:
+//         register_code(KC_LOPT);
+//         break;
+//   }
+// }
 
-void mac_cmd_reset (qk_tap_dance_state_t *state, void *user_data) {
-  switch (mac_cmd_tap_state.state) {
-    case SINGLE_TAP:
-    case SINGLE_HOLD:
-        unregister_code(KC_LCMD);
-        break;
-    case DOUBLE_TAP:
-    case DOUBLE_HOLD:
-        unregister_code(KC_LOPT);
-        break;
-    }
-  mac_cmd_tap_state.state = 0;
-}
+// void mac_cmd_reset (qk_tap_dance_state_t *state, void *user_data) {
+//   switch (mac_cmd_tap_state.state) {
+//     case SINGLE_TAP:
+//     case SINGLE_HOLD:
+//         unregister_code(KC_LCMD);
+//         break;
+//     case DOUBLE_TAP:
+//     case DOUBLE_HOLD:
+//         unregister_code(KC_LOPT);
+//         break;
+//     }
+//   mac_cmd_tap_state.state = 0;
+// }
 
 /* -------------------------------- TDM_OPT -------------------------------- */
 
 //Initialize tap structure associated with tap dance key
-static tap mac_opt_tap_state = {
-  .is_press_action = true,
-  .state = 0
-};
+// static tap mac_opt_tap_state = {
+//   .is_press_action = true,
+//   .state = 0
+// };
 
 //Functions that control what our tap dance key does
-void mac_opt_finished (qk_tap_dance_state_t *state, void *user_data) {
-  mac_opt_tap_state.state = cur_dance(state);
-  switch (mac_opt_tap_state.state) {
-    case SINGLE_TAP:
-    case SINGLE_HOLD:
-        register_code(KC_ROPT);
-        break;
-    case DOUBLE_TAP:
-    case DOUBLE_HOLD:
-        register_code(KC_LSFT);
-        register_code(KC_ROPT);
-        break;
-  }
-}
+// void mac_opt_finished (qk_tap_dance_state_t *state, void *user_data) {
+//   mac_opt_tap_state.state = cur_dance(state);
+//   switch (mac_opt_tap_state.state) {
+//     case SINGLE_TAP:
+//     case SINGLE_HOLD:
+//         register_code(KC_ROPT);
+//         break;
+//     case DOUBLE_TAP:
+//     case DOUBLE_HOLD:
+//         register_code(KC_LSFT);
+//         register_code(KC_ROPT);
+//         break;
+//   }
+// }
 
-void mac_opt_reset (qk_tap_dance_state_t *state, void *user_data) {
-  switch (mac_opt_tap_state.state) {
-    case SINGLE_TAP:
-    case SINGLE_HOLD:
-        unregister_code(KC_ROPT);
-        break;
-    case DOUBLE_TAP:
-    case DOUBLE_HOLD:
-        unregister_code(KC_LSFT);
-        unregister_code(KC_ROPT);
-        break;
-    }
-  mac_opt_tap_state.state = 0;
-}
+// void mac_opt_reset (qk_tap_dance_state_t *state, void *user_data) {
+//   switch (mac_opt_tap_state.state) {
+//     case SINGLE_TAP:
+//     case SINGLE_HOLD:
+//         unregister_code(KC_ROPT);
+//         break;
+//     case DOUBLE_TAP:
+//     case DOUBLE_HOLD:
+//         unregister_code(KC_LSFT);
+//         unregister_code(KC_ROPT);
+//         break;
+//     }
+//   mac_opt_tap_state.state = 0;
+// }
 
 /* -------------------------------------------------------------------------- */
 /*                                INIT/WAKEUP                                 */
@@ -427,7 +417,38 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-
+    case SP_CHORD1:
+      if (record->event.pressed) {
+        if (IS_LAYER_ON(_MAC)) {
+          register_mods(mod_config(MOD_LSFT | MOD_LGUI)); //SHIFT+CMD
+        } else {
+          register_mods(mod_config(MOD_LSFT | MOD_LCTL)); //CTL+SHIFT
+        }
+      } else { //key release
+        if (IS_LAYER_ON(_MAC)) {
+          unregister_mods(mod_config(MOD_LSFT | MOD_LGUI)); //SHIFT+CMD
+        } else {
+          unregister_mods(mod_config(MOD_LSFT | MOD_LCTL)); //CTL+SHIFT
+        }
+      }
+      return false;
+      break;
+    case SP_CHORD2:
+      if (record->event.pressed) {
+        if (IS_LAYER_ON(_MAC)) {
+          register_mods(mod_config(MOD_LALT | MOD_LGUI)); //OPT+CMD
+        } else {
+          register_mods(mod_config(MOD_LSFT | MOD_LALT)); //SHIFT+ALT
+        }
+      } else { //key release
+        if (IS_LAYER_ON(_MAC)) {
+          unregister_mods(mod_config(MOD_LALT | MOD_LGUI)); //OPT+CMD
+        } else {
+          unregister_mods(mod_config(MOD_LSFT | MOD_LALT)); //SHIFT+ALT
+        }
+      }
+      return false;
+      break;
     }
   return true;
 }
