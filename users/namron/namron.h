@@ -86,6 +86,7 @@ enum custom_keycodes {
   DE_ss,
   DE_ue,
   DE_eur,
+  SP_ALT,
   SP_CHORD1,
   SP_CHORD2,
 };
@@ -276,12 +277,17 @@ enum custom_keycodes {
 /* -------------------------------------------------------------------------- */
 
 
-void suspend_wakeup_init_kb(void)
-{
+void suspend_wakeup_init_kb(void) {
   // re-enable rgb matrix on wakeup
      #ifdef RGB_MATRIX_ENABLE
           rgb_matrix_set_suspend_state(false);
      #endif
+     suspend_wakeup_init_user();
+}
+
+void suspend_wakeup_init_user(void) {
+  //sync layer_state and default_layer_state (from EEPORM) on init
+  layer_state_set(default_layer_state);
 }
 
 // auto-mouse: https://github.com/qmk/qmk_firmware/pull/17962
@@ -290,10 +296,8 @@ void pointing_device_init_user(void) {
     set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
 }
 
-
-
-// sync layer_state and default_layer_state (from EEPORM) on init
 void matrix_init_user(void) {
+  //sync layer_state and default_layer_state (from EEPORM) on init
   layer_state_set(default_layer_state);
 }
 
@@ -417,6 +421,22 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
+    case SP_ALT:
+      if (record->event.pressed) {
+        if (IS_LAYER_ON(_MAC)) {
+          register_mods(mod_config(MOD_RALT));
+        } else {
+          register_mods(mod_config(MOD_LALT));
+        }
+      } else { //key release
+        if (IS_LAYER_ON(_MAC)) {
+          unregister_mods(mod_config(MOD_RALT));
+        } else {
+          unregister_mods(mod_config(MOD_LALT));
+        }
+      }
+      return false;
+      break;
     case SP_CHORD1:
       if (record->event.pressed) {
         if (IS_LAYER_ON(_MAC)) {
@@ -438,13 +458,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         if (IS_LAYER_ON(_MAC)) {
           register_mods(mod_config(MOD_LALT | MOD_LGUI)); //OPT+CMD
         } else {
-          register_mods(mod_config(MOD_LSFT | MOD_LALT)); //SHIFT+ALT
+          register_mods(mod_config(MOD_LSFT | MOD_RALT)); //SHIFT+ALT
         }
       } else { //key release
         if (IS_LAYER_ON(_MAC)) {
-          unregister_mods(mod_config(MOD_LALT | MOD_LGUI)); //OPT+CMD
+          unregister_mods(mod_config(MOD_RALT | MOD_LGUI)); //OPT+CMD
         } else {
-          unregister_mods(mod_config(MOD_LSFT | MOD_LALT)); //SHIFT+ALT
+          unregister_mods(mod_config(MOD_LSFT | MOD_RALT)); //SHIFT+ALT
         }
       }
       return false;
