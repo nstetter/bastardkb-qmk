@@ -36,7 +36,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤ ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤
        KC_BSLS,   KC_Z,       KC_X,       KC_C,       KC_D,       KC_V,         KC_K,       KC_H,       KC_COMM,    KC_DOT,     KC_SLSH,    KC_MINS,
   // ╰───────────┴───────────┴───────────┼───────────┼───────────┼───────────┤ ├───────────┴───────────┴───────────┴───────────┴───────────┴───────────╯
-                                          KC_LCTL,     SP_SHBS,    SP_SUENT,     SP_ESCINT,  SP_NAV
+                                          KC_LCTL,    SP_SHBS,    SP_SUENT,     SP_ESCINT,  SP_NAV
   //                                     ╰───────────┴───────────┴───────────╯ ╰───────────┴───────────╯
   ),
 
@@ -60,7 +60,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤ ├───────────┼───────────┼───────────┼───────────┼───────────┼───────────┤
        _______,   _______,    _______,    _______,    _______,    _______,      _______,    _______,    _______,    _______,    _______,    _______,
   // ╰───────────┴───────────┴───────────┼───────────┼───────────┼───────────┤ ├───────────┴───────────┴───────────┴───────────┴───────────┴───────────╯
-                                          SP_CHORD1,  SP_ALT,     SP_CHORD2,    _______,    _______
+                                          SP_CHORD1,  KC_LALT,    SP_CHORD2,    _______,    _______
   //                                     ╰───────────┴───────────┴───────────╯ ╰───────────┴───────────╯
   ),
 
@@ -120,6 +120,7 @@ void keyboard_post_init_user(void) {
      rgb_matrix_mode_noeeprom(DEFAULT_RGB_MATRIX_MODE);
      rgb_matrix_sethsv_noeeprom(HSV_DEFAULT);
      rgb_matrix_set_speed_noeeprom(70);
+     sync_layer_state();
 }
 
 // layer indicators https://docs.qmk.fm/#/feature_rgb_matrix?id=indicator-examples

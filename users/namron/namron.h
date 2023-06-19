@@ -15,9 +15,9 @@
 /* ---------------------------------- keys ---------------------------------- */
 // special keys
 #define SP_ATAB LALT(KC_TAB) //ALT+TAB
-#define SP_CTAB LCTL(KC_TAB) //CTL+TAB
+// #define SP_CTAB LCTL(KC_TAB) //CTL+TAB
 #define SP_ASPC LALT(KC_SPC) //ALT+SPC
-#define SP_MID LSFT(KC_BTN3) //SHIFT+MIDDLEMOUSE
+// #define SP_MID LSFT(KC_BTN3) //SHIFT+MIDDLEMOUSE
 
 // layer modifiers
 #define SP_SUENT MT(MOD_LGUI,KC_ENT)  //Enter when pressed, Super when hold
@@ -287,7 +287,8 @@ void suspend_wakeup_init_kb(void) {
 
 void suspend_wakeup_init_user(void) {
   //sync layer_state and default_layer_state (from EEPORM) on init
-  layer_state_set(default_layer_state);
+  // layer_state_set(default_layer_state);
+  sync_layer_state();
 }
 
 // auto-mouse: https://github.com/qmk/qmk_firmware/pull/17962
@@ -296,11 +297,15 @@ void pointing_device_init_user(void) {
     set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
 }
 
-void matrix_init_user(void) {
+// void matrix_init_user(void) {
+//   //sync layer_state and default_layer_state (from EEPORM) on init
+//   layer_state_set(default_layer_state);
+// }
+
+void sync_layer_state(void) {
   //sync layer_state and default_layer_state (from EEPORM) on init
   layer_state_set(default_layer_state);
 }
-
 /* -------------------------------------------------------------------------- */
 /*                                  SHUTDOWN                                  */
 /* -------------------------------------------------------------------------- */
